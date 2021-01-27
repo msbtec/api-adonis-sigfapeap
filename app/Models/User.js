@@ -7,6 +7,23 @@ const Model = use('Model')
 const Hash = use('Hash')
 
 class User extends Model {
+
+  static get hidden () {
+    return ['password']
+  }
+
+  static get computed () {
+    return ['url']
+  }
+
+  profile () {
+    return this.belongsTo('App/Models/Profile', 'profile_id', 'id')
+  }
+
+  office () {
+    return this.belongsTo('App/Models/Office', 'office_id', 'id')
+  }
+
   static boot () {
     super.boot()
 
@@ -33,6 +50,10 @@ class User extends Model {
    */
   tokens () {
     return this.hasMany('App/Models/Token')
+  }
+
+  getUrl ({ avatar }) {
+    return `http://localhost:3333/files/${avatar || 'default.png'}`
   }
 }
 

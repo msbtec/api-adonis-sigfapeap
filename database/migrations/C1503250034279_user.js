@@ -7,16 +7,17 @@ class UserSchema extends Schema {
   up () {
     this.create('users', (table) => {
       table.increments()
-      table.string('email', 254).notNullable().unique()
-      table.string('password', 60).notNullable()
+      table.string('cpf').notNullable().unique()
+      table.string('password').notNullable()
 
       table.string('type_personal')
       table.string('name')
+      table.string('avatar')
       table.string('rg')
       table.string('orger_emitter')
       table.string('uf')
       table.string('date_emitter')
-      table.string('email')
+      table.text('email')
       table.string('sex')
       table.string('birthday')
       table.string('race')
@@ -26,7 +27,8 @@ class UserSchema extends Schema {
       table.string('school')
       table.string('rg_foreign')
       table.string('passport')
-      table.string('knowledgesArea')
+      table.text('knowledgesArea')
+      table.boolean('evaluator').defaultTo(false)
 
       table.string('zipcode')
       table.string('street')
@@ -44,7 +46,7 @@ class UserSchema extends Schema {
       table.string('generate_connection')
       table.string('service_time')
       table.string('regime_work')
-      table.string('office')
+      table.string('office_name')
       table.string('office_time')
 
       table.string('professional_zipcode')
@@ -61,6 +63,25 @@ class UserSchema extends Schema {
 
       table.string('address_mail')
       table.string('received_informations')
+
+      table.string('address')
+      table.string('nomeReduzido')
+
+      table
+        .integer('office_id')
+        .unsigned()
+        .references('id')
+        .inTable('offices')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
+
+      table
+        .integer('profile_id')
+        .unsigned()
+        .references('id')
+        .inTable('profiles')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
 
       table.timestamps()
     })

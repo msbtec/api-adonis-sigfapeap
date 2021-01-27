@@ -17,5 +17,18 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+  return { mensagem: 'ok' };
+});
+
+Route.post('/auth/register', 'AuthController.register');
+Route.post('/auth/login', 'AuthController.login');
+
+Route.get('/users', 'UserController.index');
+Route.put('/users/:id', 'UserController.update');
+
+Route.get('files/:name', 'FileController.show');
+
+Route.resource('/offices','OfficeController');
+Route.resource('/profiles','ProfileController');
+Route.resource('/connections','ConnectionSearchController');
+Route.resource('/searchareas','SearchAreaController');
