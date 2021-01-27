@@ -10,13 +10,15 @@ class SearchAreaSchema extends Schema {
 
       table.string('name')
 
-      table
-        .integer('connection_area_id')
-        .unsigned()
-        .references('id')
-        .inTable('connection_searches')
-        .onUpdate('CASCADE')
-        .onDelete('SET NULL')
+      table.text('connections_area')
+
+      // table
+      //   .integer('connection_area_id')
+      //   .unsigned()
+      //   .references('id')
+      //   .inTable('connection_searches')
+      //   .onUpdate('CASCADE')
+      //   .onDelete('SET NULL')
 
       table.timestamps()
     })

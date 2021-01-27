@@ -21,14 +21,17 @@ class AuthController {
     const final = JSON.parse(data);
 
     const user = await User.create({ ...final, avatar });
-    return user;
+
+    let user_created = await User.query().where({ cpf: user.cpf }).with('profile').with('office').first();
+
+    return user_created;
   }
 
   async login({ request, auth }) {
     const { cpf, password } = request.all();
     const token = await auth.attempt(cpf, password);
 
-    const user = await User.query().where({ cpf }).with('profile').first();
+    const user = await User.query().where({ cpf }).with('profile').with('office').first();
 
     return { user, auth: token };
   }

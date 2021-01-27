@@ -97,7 +97,7 @@ Factory.blueprint('App/Models/ConnectionSearch', async (faker, i, data) => {
 Factory.blueprint('App/Models/SearchArea', async (faker, i, data) => {
   return {
     name: ['Filosofia','Matemática'][i],
-    connection_area_id: [1,2][i]
+    connections_area: ["1", "2"][i]
   }
 })
 

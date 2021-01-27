@@ -1,13 +1,21 @@
 'use strict'
 
 const SearchArea = use('App/Models/SearchArea')
+const ConnectionSearch = use('App/Models/ConnectionSearch')
 
 class SearchAreaController {
   async index ({ response }) {
-    //let searches = await SearchArea.all();
-    let searches = await SearchArea.query().with('connection_area').fetch();
+    let searches = await SearchArea.query().fetch();
 
-    return response.json(searches);
+    let final = []
+
+    searches.toJSON().map(async search => {
+      const connections = search.connections_area.split(',').map(s => Number(s.trim()))
+
+      final.push({...search, connections})
+    })
+
+    return response.json(final);
   }
 
   async show ({ params, response }) {

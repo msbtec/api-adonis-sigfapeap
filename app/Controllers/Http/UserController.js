@@ -27,12 +27,19 @@ class UserController {
     await user.merge({ ...data, avatar })
     await user.save()
 
-    return user;
+    let user_updated = await User.query().where({ cpf: user.cpf }).with('profile').with('office').first();
+
+    return user_updated;
   }
 
   async destroy({ params, response }) {
-    await User.find(params.id).delete();
-    return response.json({ message: 'Usuário deletado!' });
+    const user = await User.find(params.id);
+    if (!user) {
+      return response.status(404).json({ data: 'User not found' });
+    }
+    await user.delete();
+
+    return response.status(204).json(null);
   }
 
 }
