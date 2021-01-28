@@ -15,7 +15,7 @@ const Factory = use('Factory')
 
 class SearchAreaSeeder {
   async run () {
-    //await Factory.model('App/Models/SearchArea').createMany(0)
+    await Factory.model('App/Models/SearchArea').createMany(2)
     console.log('SearchArea created')
   }
 }

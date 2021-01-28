@@ -22,11 +22,11 @@
 
 const Factory = use('Factory')
 
-// Factory.blueprint('App/Models/Office', async (faker, i, data) => {
-//   return {
-//     name: ['Programador'][i]
-//   }
-// })
+Factory.blueprint('App/Models/Office', async (faker, i, data) => {
+  return {
+    name: ['Procurador de Justiça'][i]
+  }
+})
 
 Factory.blueprint('App/Models/Profile', async (faker, i, data) => {
   return {
@@ -104,19 +104,19 @@ Factory.blueprint('App/Models/ConnectionSearch', async (faker, i, data) => {
   }
 })
 
-// Factory.blueprint('App/Models/SearchArea', async (faker, i, data) => {
-//   return {
-//     name: ['Filosofia','Matemática'][i],
-//     connections_area: ["1", "2"][i]
-//   }
-// })
+Factory.blueprint('App/Models/SearchArea', async (faker, i, data) => {
+  return {
+    name: ['Ciência da Computação','Engenharia Elétrica'][i],
+    connections_area: ["1,3", "3"][i]
+  }
+})
 
 Factory.blueprint('App/Models/User', async (faker, i, data) => {
   return {
-    name: ["Ana Sophia"][i],
+    name: ["Higor Ramom"][i],
     cpf: ["485.048.569-05"][i],
     password: ["sigfapeap@2021"][i],
-    email: ["ana@mail.com"][i],
+    email: ["higor@mail.com"][i],
     phone: ["(89) 45754-7689"][i],
     address: ["Av. FAB nº 548"][i],
     profile_id: [1][i]

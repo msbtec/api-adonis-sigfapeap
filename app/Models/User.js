@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const Env = use('Env')
 
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
@@ -53,7 +54,7 @@ class User extends Model {
   }
 
   getUrl ({ avatar }) {
-    return `http://localhost:3333/files/${avatar || 'default.png'}`
+    return `${Env.get('APP_URL')}/files/${avatar || 'default.png'}`
   }
 }
 
