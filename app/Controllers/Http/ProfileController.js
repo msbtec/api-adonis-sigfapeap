@@ -44,6 +44,11 @@ class ProfileController {
     if (!profile) {
       return response.status(404).json({ data: 'Profile not found' });
     }
+
+    if(profile.id == 1 || profile.id == 2 || profile.id == 3){
+      return response.status(401).json({ message: `Perfil ${profile.name} não pode ser apagado!` });
+    }
+
     await profile.delete();
 
     return response.status(204).json(null);

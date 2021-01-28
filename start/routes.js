@@ -29,8 +29,13 @@ Route.delete('/users/:id', 'UserController.destroy');
 
 Route.get('files/:name', 'FileController.show');
 
+Route.get('programs/files/:id', 'FileController.index');
+Route.post('files', 'FileController.store');
+Route.delete('files/:id', 'FileController.destroy');
+
 Route.resource('/offices','OfficeController');
 Route.resource('/profiles','ProfileController');
 Route.resource('/connections','ConnectionSearchController');
 Route.resource('/searchareas','SearchAreaController');
 Route.resource('/foundations','FoundationController');
+Route.resource('/programs','ProgramController');

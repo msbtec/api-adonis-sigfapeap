@@ -15,7 +15,7 @@ const Factory = use('Factory')
 
 class ConnectionSearchSeeder {
   async run () {
-    await Factory.model('App/Models/ConnectionSearch').createMany(2)
+    await Factory.model('App/Models/ConnectionSearch').createMany(9)
     console.log('ConnectionSearch created')
   }
 }

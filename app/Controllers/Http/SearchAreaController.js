@@ -8,12 +8,17 @@ class SearchAreaController {
     let searches = await SearchArea.query().fetch();
 
     let final = []
-
-    searches.toJSON().map(async search => {
+    await Promise.all(searches.toJSON().map(async search => {
       const connections = search.connections_area.split(',').map(s => Number(s.trim()))
 
-      final.push({...search, connections})
-    })
+      let result = []
+      for(let i=0;i<connections.length;i++){
+        const connection = await ConnectionSearch.find(connections[i]);
+        result.push(connection.toJSON())
+      }
+
+      final.push({ ...search, connections: result })
+    }))
 
     return response.json(final);
   }
@@ -31,7 +36,15 @@ class SearchAreaController {
 
     await search.save();
 
-    return response.status(201).json(search);
+    const connections = search.toJSON().connections_area.split(',').map(s => Number(s.trim()))
+
+    let result = []
+    for(let i=0;i<connections.length;i++){
+      const connection = await ConnectionSearch.find(connections[i]);
+      result.push(connection.toJSON())
+    }
+
+    return response.status(201).json({ ...search.toJSON(), connections: result })
   }
 
   async update ({ params, request, response }) {
@@ -45,7 +58,15 @@ class SearchAreaController {
     await search.merge(data);
     await search.save();
 
-    return response.status(200).json(search)
+    const connections = search.toJSON().connections_area.split(',').map(s => Number(s.trim()))
+
+    let result = []
+    for(let i=0;i<connections.length;i++){
+      const connection = await ConnectionSearch.find(connections[i]);
+      result.push(connection.toJSON())
+    }
+
+    return response.status(200).json({ ...search.toJSON(), connections: result })
   }
 
   async destroy({ params, response }) {

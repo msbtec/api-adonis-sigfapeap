@@ -15,7 +15,7 @@ const Factory = use('Factory')
 
 class OfficeSeeder {
   async run () {
-    await Factory.model('App/Models/Office').createMany(1)
+    //await Factory.model('App/Models/Office').createMany(0)
     console.log('Office created')
   }
 }
