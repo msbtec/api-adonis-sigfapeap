@@ -36,9 +36,7 @@ class ProgramController {
       result.push(evaluator.toJSON())
     }
 
-    final.push({ ...program.toJSON(), evaluators: result })
-
-    return response.json(final);
+    return response.json({ ...program.toJSON(), evaluators: result });
   }
 
   async store ({ request, response }) {
