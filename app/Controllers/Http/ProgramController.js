@@ -28,7 +28,7 @@ class ProgramController {
     const program = await Program.find(params.id);
 
     let final = []
-    const evaluators = program.evaluators ? program.evaluators.split(',').map(s => Number(s.trim())) : []
+    const evaluators = program.toJSON().evaluators ? program.toJSON().evaluators.split(',').map(s => Number(s.trim())) : []
 
     let result = []
     for(let i=0;i<evaluators.length;i++){
@@ -36,7 +36,7 @@ class ProgramController {
       result.push(evaluator.toJSON())
     }
 
-    final.push({ ...program, evaluators: result })
+    final.push({ ...program.toJSON(), evaluators: result })
 
     return response.json(final);
   }
