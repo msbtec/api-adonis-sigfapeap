@@ -27,7 +27,6 @@ class ProgramController {
   async show ({ params, response }) {
     const program = await Program.find(params.id);
 
-    let final = []
     const evaluators = program.toJSON().evaluators ? program.toJSON().evaluators.split(',').map(s => Number(s.trim())) : []
 
     let result = []

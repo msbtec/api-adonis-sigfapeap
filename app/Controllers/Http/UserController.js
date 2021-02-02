@@ -1,6 +1,7 @@
 'use strict'
 
 const User = use('App/Models/User');
+const Program = use('App/Models/Program');
 const Helpers = use('Helpers')
 
 class UserController {
@@ -8,6 +9,31 @@ class UserController {
   async index({ response }) {
     let users = await User.query().with('profile').with('office').fetch();
     return response.json(users);
+  }
+
+  async getEvaluators({ response }) {
+    let users = await User.query().where({ evaluator: true }).with('profile').with('office').fetch();
+    let programs = await Program.all();
+
+    let final = []
+
+    await Promise.all(users.toJSON().map(async user => {
+
+      let programs_from_user = []
+
+      await Promise.all(programs.toJSON().map(async program => {
+        const evaluators = program.evaluators ? program.evaluators.split(',').map(s => Number(s.trim())) : []
+
+        for(let i=0;i<evaluators.length;i++){
+          await User.find(evaluators[i]);
+          programs_from_user.push(program)
+        }
+      }))
+
+      final.push({ ...user, programs: programs_from_user })
+    }))
+
+    return response.json(final);
   }
 
   async update ({ request, params }) {
