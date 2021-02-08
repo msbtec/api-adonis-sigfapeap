@@ -36,6 +36,43 @@ class UserController {
     return response.json(final);
   }
 
+  async search({ response, request }) {
+    const { nameOrCpf, school, type_personal, knowledgesArea } = request.all().params;
+
+    let users = await User.query()
+      .where((builder) => {
+        if(type_personal){
+          builder
+              .where('type_personal', 'LIKE', '%' + type_personal + '%')
+        }else{
+          builder
+              .where({ type_personal: 'Pesquisador' })
+        }
+      })
+      .where((builder) => {
+        if(nameOrCpf){
+          builder
+              .where('name', 'LIKE', '%' + nameOrCpf + '%')
+              .orWhere('cpf', 'LIKE', '%' + nameOrCpf + '%')
+        }
+      })
+      .where((builder) => {
+        if(school){
+          builder
+            .where('school', 'like', '%'+school+"%")
+        }
+      })
+      .where((builder) => {
+        if(knowledgesArea){
+          builder
+            .where('knowledgesArea', 'like', '%'+knowledgesArea+"%")
+        }
+      })
+      .with('profile').with('office').fetch();
+
+    return response.json(users);
+  }
+
   async update ({ request, params }) {
     const data = request.all();
     const user = await User.findOrFail(params.id);

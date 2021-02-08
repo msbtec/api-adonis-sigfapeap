@@ -25,6 +25,7 @@ Route.post('/auth/login', 'AuthController.login');
 
 Route.get('/users', 'UserController.index');
 Route.get('/evaluators', 'UserController.getEvaluators');
+Route.post('/users/search', 'UserController.search');
 Route.put('/users/:id', 'UserController.update');
 Route.delete('/users/:id', 'UserController.destroy');
 
