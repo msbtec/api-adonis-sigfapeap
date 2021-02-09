@@ -6,8 +6,21 @@ const Helpers = use('Helpers')
 
 class UserController {
 
-  async index({ response }) {
-    let users = await User.query().with('profile').with('office').fetch();
+  async index({ response, request }) {
+    const { page, researcher } = request.all();
+
+    let users = await User.query()
+      .where((builder) => {
+        if(researcher){
+          builder
+            .where({ type_personal: "Pesquisador" })
+            .orWhere({ type_personal: 'Pesquisador estrangeiro' })
+        } else {
+          builder
+            .whereNull('type_personal')
+        }
+      })
+      .with('profile').with('office').paginate(page, 1);
     return response.json(users);
   }
 
@@ -26,7 +39,9 @@ class UserController {
 
         for(let i=0;i<evaluators.length;i++){
           await User.find(evaluators[i]);
-          programs_from_user.push(program)
+          if(evaluators[i] == user.id){
+            programs_from_user.push(program)
+          }
         }
       }))
 
@@ -37,16 +52,17 @@ class UserController {
   }
 
   async search({ response, request }) {
-    const { nameOrCpf, school, type_personal, knowledgesArea } = request.all().params;
+    const { page, nameOrCpf, school, type_personal, knowledgesArea } = request.all().params;
 
     let users = await User.query()
       .where((builder) => {
         if(type_personal){
           builder
-              .where('type_personal', 'LIKE', '%' + type_personal + '%')
+              .where('type_personal', '=', type_personal)
         }else{
           builder
               .where({ type_personal: 'Pesquisador' })
+              .orWhere({ type_personal: 'Pesquisador estrangeiro' })
         }
       })
       .where((builder) => {
@@ -68,7 +84,7 @@ class UserController {
             .where('knowledgesArea', 'like', '%'+knowledgesArea+"%")
         }
       })
-      .with('profile').with('office').fetch();
+      .with('profile').with('office').paginate(page, 1);
 
     return response.json(users);
   }
