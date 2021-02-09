@@ -20,7 +20,7 @@ class UserController {
             .whereNull('type_personal')
         }
       })
-      .with('profile').with('office').paginate(page, 1);
+      .with('profile').with('office').paginate(page, 30);
     return response.json(users);
   }
 
@@ -84,7 +84,7 @@ class UserController {
             .where('knowledgesArea', 'like', '%'+knowledgesArea+"%")
         }
       })
-      .with('profile').with('office').paginate(page, 1);
+      .with('profile').with('office').paginate(page, 30);
 
     return response.json(users);
   }
