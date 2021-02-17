@@ -15,7 +15,10 @@ class ProgramController {
       let result = []
       for(let i=0;i<evaluators.length;i++){
         const evaluator = await User.find(evaluators[i]);
-        result.push(evaluator.toJSON())
+
+        if(evaluator){
+          result.push(evaluator.toJSON())
+        }
       }
 
       final.push({ ...program, evaluators: result })
