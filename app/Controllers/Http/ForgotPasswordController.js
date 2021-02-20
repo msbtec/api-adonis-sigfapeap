@@ -23,11 +23,12 @@ class ForgotPasswordController {
         token: user.token,
         link: `https://front-sigfapeap.msbtec.com.br/resetar-senha?token=${user.token}`
       }, (message) => {
-        message.from('naoresponda@sigfapeap.msbtec.com.br')
+        message.from('naoresponda.sigfapeap@gmail.com')
         message.to(user.email)
         message.subject('Recuperação de senha')
       })
     } catch (error) {
+      console.log(error)
       return response.status(error.status).send({
         message: 'E-mail não encontrado!'
       })

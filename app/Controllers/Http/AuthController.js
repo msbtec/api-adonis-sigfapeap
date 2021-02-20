@@ -29,7 +29,7 @@ class AuthController {
         name: user.name,
         password: final.password
       }, (message) => {
-        message.from('naoresponda@sigfapeap.msbtec.com.br')
+        message.from('naoresponda.sigfapeap@gmail.com')
         message.to(user.email)
         message.subject('Criação de conta')
       })
