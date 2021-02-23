@@ -52,6 +52,7 @@ class UserController {
   }
 
   async search({ response, request }) {
+    // console.log(request.all().params)
     const { page, nameOrCpf, school, type_personal, knowledgesArea } = request.all().params;
 
     let users = await User.query()
