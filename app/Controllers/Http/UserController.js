@@ -112,10 +112,13 @@ class UserController {
     return user_updated;
   }
 
-  async destroy({ params, response }) {
+  async destroy({ params, response, auth }) {
+    if(auth.user.id == params.id){
+      return response.status(404).json({ message: 'Não é possível apagar o próprio usuário!' });
+    }
     const user = await User.find(params.id);
     if (!user) {
-      return response.status(404).json({ data: 'User not found' });
+      return response.status(404).json({ data: 'Usuário não encontrado!' });
     }
     await user.delete();
 

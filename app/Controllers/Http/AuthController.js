@@ -30,7 +30,7 @@ class AuthController {
         password: final.password
       }, (message) => {
         message.from('naoresponda.sigfapeap@gmail.com')
-        message.to(user.email)
+        message.to(String(user.email).split(',')[0].trim())
         message.subject('Criação de conta')
       })
     } catch (error) {}
