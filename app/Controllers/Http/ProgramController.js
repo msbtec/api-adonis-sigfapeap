@@ -56,9 +56,10 @@ class ProgramController {
       if (!upload.moved()) {
         throw upload.error();
       }
+
+      program.file = file
     }
 
-    program.file = file
 
     await program.save();
 
