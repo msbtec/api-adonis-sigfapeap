@@ -10,6 +10,11 @@ class UserSchema extends Schema {
       table.string('cpf').notNullable().unique()
       table.string('password').notNullable()
 
+      table.string('status').defaultTo('inativo')
+      table.string('token')
+      table.timestamp('token_created_at')
+      table.string('token_first_access')
+
       table.string('type_personal')
       table.string('name')
       table.string('avatar')

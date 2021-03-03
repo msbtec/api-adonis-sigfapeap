@@ -4,6 +4,9 @@ const User = use('App/Models/User');
 const Helpers = use('Helpers')
 const Mail = use('Mail');
 
+const moment = require('moment');
+const crypto = require('crypto');
+
 class AuthController {
 
   async register({ request }) {
@@ -21,13 +24,14 @@ class AuthController {
 
     const final = JSON.parse(data);
 
-    const user = await User.create({ ...final, avatar });
+    const user = await User.create({ ...final, token_first_access: crypto.randomBytes(10).toString('hex'), avatar });
 
     try {
       await Mail.send(['emails.new_account'],
       {
         name: user.name,
-        password: final.password
+        password: final.password,
+        link: `https://front-sigfapeap.msbtec.com.br/ativar-conta?token=${user.token_first_access}`
       }, (message) => {
         message.from('naoresponda.sigfapeap@gmail.com')
         message.to(String(user.email).split(',')[0].trim())
@@ -40,13 +44,17 @@ class AuthController {
     return user_created;
   }
 
-  async login({ request, auth }) {
+  async login({ request, auth, response }) {
     const { cpf, password } = request.all();
     const token = await auth.attempt(cpf, password);
 
-    const user = await User.query().where({ cpf }).with('profile').with('office').first();
+    const user = await User.query().where({ cpf }).where({ status: 'ativo' }).with('profile').with('office').first();
 
-    return { user, auth: token };
+    if(user){
+      return { user, auth: token };
+    }else{
+      return response.status(404).json({ data: 'Usuário não encontrado!' });
+    }
   }
 
 }

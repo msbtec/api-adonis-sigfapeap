@@ -25,6 +25,7 @@ Route.post('/auth/register', 'AuthController.register');
 Route.post('/auth/login', 'AuthController.login');
 Route.post('/passwords', 'ForgotPasswordController.store');
 Route.put('/passwords', 'ForgotPasswordController.update');
+Route.post('/active/account', 'UserController.active');
 
 Route.group(() => {
   Route.get('/users', 'UserController.index');
@@ -37,20 +38,22 @@ Route.group(() => {
   Route.delete('/users/:id', 'UserController.destroy');
 }).middleware(['auth'])
 
-Route.get('files/:name', 'FileController.show');
-Route.get('programs/files/:id', 'FileController.index');
-Route.post('files', 'FileController.store');
-Route.delete('files/:id', 'FileController.destroy');
-Route.get('report/:name', 'ReportController.show');
+Route.get('/files/:name', 'FileController.show');
+Route.get('/programs/files/:id', 'FileController.index');
+Route.post('/files', 'FileController.store');
+Route.delete('/files/:id', 'FileController.destroy');
+Route.get('/report/:name', 'ReportController.show');
 
 Route.group(() => {
   Route.resource('/offices','OfficeController');
   Route.resource('/profiles','ProfileController');
   Route.resource('/connections','ConnectionSearchController');
-  Route.resource('/searchareas','SearchAreaController');
+  Route.resource('/searchareas','SearchAreaController').except(['index']);
   Route.resource('/foundations','FoundationController');
   Route.resource('/programs','ProgramController');
-}).middleware(['auth'])
+}).middleware(['auth']);
+
+Route.resource('/searchareas', 'SearchAreaController').only(['index'])
 
 Route.any('*', () => {
   return { mensagem: 'rota não encontrada' };

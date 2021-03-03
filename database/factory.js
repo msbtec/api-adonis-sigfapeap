@@ -113,12 +113,13 @@ Factory.blueprint('App/Models/SearchArea', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/User', async (faker, i, data) => {
   return {
-    name: ["Higor Ramom"][i],
-    cpf: ["485.048.569-05"][i],
-    password: ["sigfapeap@2021"][i],
-    email: ["higor@mail.com"][i],
-    phone: ["(89) 45754-7689"][i],
-    address: ["Av. FAB nº 548"][i],
+    name: ["ADMINISTRADOR"][i],
+    status: ["ativo"][i],
+    cpf: ["123.456.789-00"][i],
+    password: ["password"][i],
+    email: ["math.cs.ceil@gmail.com"][i],
+    phone: [""][i],
+    address: [""][i],
     profile_id: [1][i]
   }
 })

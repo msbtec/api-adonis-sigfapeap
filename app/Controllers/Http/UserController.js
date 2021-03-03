@@ -15,9 +15,11 @@ class UserController {
           builder
             .where({ type_personal: "Pesquisador" })
             .orWhere({ type_personal: 'Pesquisador estrangeiro' })
+            .where({ status: "ativo" })
         } else {
           builder
             .whereNull('type_personal')
+            .where({ status: "ativo" })
         }
       })
       .with('profile').with('office').paginate(page, 30);
@@ -25,7 +27,7 @@ class UserController {
   }
 
   async getEvaluators({ response }) {
-    let users = await User.query().where({ evaluator: true }).with('profile').with('office').fetch();
+    let users = await User.query().where({ evaluator: true }).where({ status: "ativo" }).with('profile').with('office').fetch();
     let programs = await Program.all();
 
     let final = []
@@ -85,6 +87,7 @@ class UserController {
             .where('knowledgesArea', 'like', '%'+knowledgesArea+"%")
         }
       })
+      .where({ status: "ativo" })
       .with('profile').with('office').paginate(page, 30);
 
     return response.json(users);
@@ -110,6 +113,23 @@ class UserController {
     let user_updated = await User.query().where({ cpf: user.cpf }).with('profile').with('office').first();
 
     return user_updated;
+  }
+
+  async active({ request, response }){
+    try {
+      const { token } = request.all();
+
+      const user = await User.findByOrFail('token_first_access', token);
+
+      user.token_first_access = null;
+      user.status = 'ativo';
+
+      await user.save()
+    } catch (error) {
+      return response.status(error.status).send({
+        message: 'Não foi possível ativar sua conta. Contate um administrador!'
+      })
+    }
   }
 
   async destroy({ params, response, auth }) {

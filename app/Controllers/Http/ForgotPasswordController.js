@@ -28,7 +28,6 @@ class ForgotPasswordController {
         message.subject('Recuperação de senha')
       })
     } catch (error) {
-      console.log(error)
       return response.status(error.status).send({
         message: 'E-mail não encontrado!'
       })
