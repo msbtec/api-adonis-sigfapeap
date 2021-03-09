@@ -3,6 +3,7 @@
 const User = use('App/Models/User');
 const Program = use('App/Models/Program');
 const Helpers = use('Helpers')
+const Mail = use('Mail');
 
 class UserController {
 
@@ -111,6 +112,21 @@ class UserController {
     await user.save()
 
     let user_updated = await User.query().where({ cpf: user.cpf }).with('profile').with('office').first();
+
+    const { evaluator } = data;
+
+    if(String(evaluator) === "true"){
+      try {
+        await Mail.send(['emails.new_status'],
+        {
+          name: user.name
+        }, (message) => {
+          message.from('naoresponda.sigfapeap@gmail.com')
+          message.to(String(user.email).split(',')[0].trim())
+          message.subject('Atualização de perfil')
+        })
+      } catch (error) {console.log(error)}
+    }
 
     return user_updated;
   }

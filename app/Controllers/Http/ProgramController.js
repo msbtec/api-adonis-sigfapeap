@@ -3,6 +3,7 @@
 const Program = use('App/Models/Program')
 const User = use('App/Models/User')
 const Helpers = use('Helpers')
+const Mail = use('Mail');
 
 class ProgramController {
   async index ({ response }) {
@@ -94,18 +95,28 @@ class ProgramController {
       }
     }
 
-    await program.merge({ ...data, file });
-    await program.save();
+    const { name, email } = request.all();
 
-    // const evaluators = program.toJSON().evaluators.split(',').map(s => Number(s.trim()))
+    if(name && email){
+      await program.merge({ evaluator: data.evaluator });
+      await program.save();
 
-    // let result = []
-    // for(let i=0;i<evaluators.length;i++){
-    //   const evaluator = await User.find(evaluators[i]);
-    //   result.push(evaluator.toJSON())
-    // }
+      try {
+        await Mail.send(['emails.add_project'],
+        {
+          name,
+          project: program.title
+        }, (message) => {
+          message.from('naoresponda.sigfapeap@gmail.com')
+          message.to(String(email).split(',')[0].trim())
+          message.subject('Atualização de perfil')
+        })
+      } catch (error) {console.log(error)}
+    }else{
+      await program.merge({ ...data, file });
+      await program.save();
+    }
 
-    // return response.status(201).json({ ...program.toJSON(), evaluators: result })
     return response.status(201).json(program)
   }
 
