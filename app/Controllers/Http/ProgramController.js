@@ -98,7 +98,7 @@ class ProgramController {
     const { name, email } = request.all();
 
     if(name && email){
-      await program.merge({ evaluator: data.evaluator });
+      await program.merge({ evaluators: data.evaluators });
       await program.save();
 
       try {
